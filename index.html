@@ -1,17 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Phone Check</title>
+  <title>Phone Prank: Total Mayhem</title>
   <style>
     body {
       background: black;
       color: lime;
       font-family: monospace;
       font-size: 1.2em;
+      text-align: center;
+      padding: 20px;
     }
-    #spam {
-      display: flex;
-      flex-wrap: wrap;
+    #start-button {
+      padding: 20px;
+      background: red;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    #warning {
+      font-size: 2em;
+      font-weight: bold;
+      display: none;
+      color: yellow;
+    }
+    #hack-screen, #virus-scan {
+      display: none;
     }
     .block {
       width: 20px;
@@ -26,6 +41,11 @@
       100% { transform: rotate(360deg); }
     }
 
+    #spam {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
     button {
       position: fixed;
       top: 10px;
@@ -36,24 +56,102 @@
       color: black;
       font-weight: bold;
     }
+
   </style>
 </head>
 <body>
-  <h1>System Optimization In Progress...</h1>
+  <h1>Phone Diagnostic Test</h1>
+  <button id="start-button" onclick="startPrank()">Start Test</button>
+  <div id="warning">Warning: Your phone will be temporarily compromised!</div>
+  <div id="hack-screen">
+    <h2>Accessing your phone... please wait...</h2>
+    <pre id="terminal"></pre>
+  </div>
+  <div id="virus-scan">
+    <h2>Virus Scan In Progress...</h2>
+    <p id="scan-status">Scanning... 0%</p>
+  </div>
   <div id="spam"></div>
-  <button onclick="window.location.href='https://youtube.com/watch?v=dQw4w9WgXcQ'">Exit Prank</button>
+  <button onclick="exitPrank()">Exit Prank</button>
 
   <script>
-    let spammer = () => {
-      for (let i = 0; i < 100; i++) {
-        const block = document.createElement('div');
-        block.className = 'block';
-        document.getElementById('spam').appendChild(block);
-      }
-      setTimeout(spammer, 50); // adjust this to make it more or less aggressive
-    };
+    function startPrank() {
+      document.getElementById('start-button').style.display = 'none';
+      document.getElementById('warning').style.display = 'block';
+      setTimeout(beginPrank, 5000); // 5-second warning
+    }
 
-    spammer();
+    function beginPrank() {
+      document.getElementById('warning').style.display = 'none';
+      startSystemUpdate();
+      setTimeout(showHackScreen, 2000); // Start after 2 sec
+      setTimeout(fakeVirusScan, 4000); // Start after 4 sec
+      setTimeout(generateLag, 6000); // Start after 6 sec
+    }
+
+    function startSystemUpdate() {
+      document.body.style.backgroundColor = 'black';
+      document.body.style.color = 'white';
+      let progressBar = '<h2>System Update: Installing... (99%)</h2>';
+      document.body.innerHTML += progressBar;
+    }
+
+    function showHackScreen() {
+      document.getElementById('hack-screen').style.display = 'block';
+      simulateTerminal();
+    }
+
+    function simulateTerminal() {
+      let terminalText = [
+        "Accessing phone...",
+        "Bypassing security...",
+        "Compromising camera...",
+        "Decrypting private files...",
+        "Injection successful!"
+      ];
+      let i = 0;
+      const terminal = document.getElementById('terminal');
+      let interval = setInterval(() => {
+        if (i < terminalText.length) {
+          terminal.innerHTML += terminalText[i] + "<br>";
+          i++;
+        } else {
+          clearInterval(interval);
+        }
+      }, 1000);
+    }
+
+    function fakeVirusScan() {
+      document.getElementById('virus-scan').style.display = 'block';
+      let progress = 0;
+      let scanStatus = document.getElementById('scan-status');
+      let scanInterval = setInterval(() => {
+        if (progress < 100) {
+          progress += 1;
+          scanStatus.innerHTML = `Scanning... ${progress}%`;
+        } else {
+          clearInterval(scanInterval);
+          scanStatus.innerHTML = "Scan complete: Malware detected!";
+        }
+      }, 50);
+    }
+
+    function generateLag() {
+      let spammer = () => {
+        for (let i = 0; i < 100; i++) {
+          const block = document.createElement('div');
+          block.className = 'block';
+          document.getElementById('spam').appendChild(block);
+        }
+        setTimeout(spammer, 50);
+      };
+      spammer();
+    }
+
+    function exitPrank() {
+      alert("You have exited the prank.");
+      location.reload();
+    }
   </script>
 </body>
-</html>
+</html>y
