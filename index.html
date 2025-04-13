@@ -1,157 +1,167 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Phone Prank: Total Mayhem</title>
+  <meta charset="UTF-8" />
+  <title>ERROR 666</title>
   <style>
-    body {
+    html, body {
+      margin: 0;
+      padding: 0;
       background: black;
-      color: lime;
-      font-family: monospace;
-      font-size: 1.2em;
-      text-align: center;
-      padding: 20px;
+      color: red;
+      font-family: 'Courier New', monospace;
+      overflow: hidden;
+      user-select: none;
     }
-    #start-button {
-      padding: 20px;
-      background: red;
-      border: none;
-      color: white;
-      font-size: 20px;
-      cursor: pointer;
-    }
-    #warning {
-      font-size: 2em;
-      font-weight: bold;
-      display: none;
-      color: yellow;
-    }
-    #hack-screen, #virus-scan {
-      display: none;
-    }
-    .block {
-      width: 20px;
-      height: 20px;
-      margin: 1px;
-      background: red;
-      animation: spin 0.1s linear infinite;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    #spam {
+    #screen {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: black;
+      color: red;
       display: flex;
-      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      font-size: 2rem;
+      z-index: 2;
     }
-
-    button {
+    .flash {
+      animation: flash 0.2s infinite alternate;
+    }
+    @keyframes flash {
+      from { color: red; }
+      to { color: black; }
+    }
+    .shake {
+      animation: shake 0.1s infinite;
+    }
+    @keyframes shake {
+      0% { transform: translate(1px, 1px) rotate(0deg); }
+      25% { transform: translate(-1px, 2px) rotate(-1deg); }
+      50% { transform: translate(-3px, 1px) rotate(1deg); }
+      75% { transform: translate(3px, 1px) rotate(0deg); }
+      100% { transform: translate(1px, -1px) rotate(-1deg); }
+    }
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+    .image-flash {
       position: fixed;
-      top: 10px;
-      right: 10px;
-      z-index: 1000;
-      padding: 10px;
-      background: white;
-      color: black;
-      font-weight: bold;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      z-index: 3;
+      opacity: 0;
+      transition: opacity 0.2s;
     }
-
   </style>
 </head>
 <body>
-  <h1>Phone Diagnostic Test</h1>
-  <button id="start-button" onclick="startPrank()">Start Test</button>
-  <div id="warning">Warning: Your phone will be temporarily compromised!</div>
-  <div id="hack-screen">
-    <h2>Accessing your phone... please wait...</h2>
-    <pre id="terminal"></pre>
-  </div>
-  <div id="virus-scan">
-    <h2>Virus Scan In Progress...</h2>
-    <p id="scan-status">Scanning... 0%</p>
-  </div>
-  <div id="spam"></div>
-  <button onclick="exitPrank()">Exit Prank</button>
 
-  <script>
-    function startPrank() {
-      document.getElementById('start-button').style.display = 'none';
-      document.getElementById('warning').style.display = 'block';
-      setTimeout(beginPrank, 5000); // 5-second warning
-    }
+<div id="screen">
+  <div id="msg">System Breach Detected...</div>
+</div>
+<canvas id="glitch"></canvas>
 
-    function beginPrank() {
-      document.getElementById('warning').style.display = 'none';
-      startSystemUpdate();
-      setTimeout(showHackScreen, 2000); // Start after 2 sec
-      setTimeout(fakeVirusScan, 4000); // Start after 4 sec
-      setTimeout(generateLag, 6000); // Start after 6 sec
-    }
+<!-- CREEPY ambient loop -->
+<audio id="creep" autoplay loop>
+  <source src="https://www.fesliyanstudios.com/play-mp3/387" type="audio/mpeg">
+</audio>
 
-    function startSystemUpdate() {
-      document.body.style.backgroundColor = 'black';
-      document.body.style.color = 'white';
-      let progressBar = '<h2>System Update: Installing... (99%)</h2>';
-      document.body.innerHTML += progressBar;
-    }
+<!-- Delayed scream -->
+<audio id="scream">
+  <source src="https://www.myinstants.com/media/sounds/movie_1.mp3" type="audio/mpeg">
+</audio>
 
-    function showHackScreen() {
-      document.getElementById('hack-screen').style.display = 'block';
-      simulateTerminal();
-    }
+<!-- Whisper loop -->
+<audio id="whisper" loop>
+  <source src="https://www.fesliyanstudios.com/play-mp3/423" type="audio/mpeg">
+</audio>
 
-    function simulateTerminal() {
-      let terminalText = [
-        "Accessing phone...",
-        "Bypassing security...",
-        "Compromising camera...",
-        "Decrypting private files...",
-        "Injection successful!"
-      ];
-      let i = 0;
-      const terminal = document.getElementById('terminal');
-      let interval = setInterval(() => {
-        if (i < terminalText.length) {
-          terminal.innerHTML += terminalText[i] + "<br>";
-          i++;
-        } else {
-          clearInterval(interval);
-        }
-      }, 1000);
-    }
+<!-- Flash image -->
+<div class="image-flash" id="imageFlash" style="background-image: url('https://i.imgur.com/1Otqg2y.jpg');"></div>
 
-    function fakeVirusScan() {
-      document.getElementById('virus-scan').style.display = 'block';
-      let progress = 0;
-      let scanStatus = document.getElementById('scan-status');
-      let scanInterval = setInterval(() => {
-        if (progress < 100) {
-          progress += 1;
-          scanStatus.innerHTML = `Scanning... ${progress}%`;
-        } else {
-          clearInterval(scanInterval);
-          scanStatus.innerHTML = "Scan complete: Malware detected!";
-        }
-      }, 50);
-    }
+<script>
+  const messages = [
+    "You shouldn't be here...",
+    "It's too late now...",
+    "System corruption: 99%",
+    "ERROR: UNDEFINED ENTITY DETECTED",
+    "Who's watching you?",
+    "run.exe failed to escape",
+    "Why did you click that?",
+    "It knows where you are...",
+    "Look behind you."
+  ];
+  let i = 0;
+  const msgBox = document.getElementById('msg');
+  const screen = document.getElementById('screen');
 
-    function generateLag() {
-      let spammer = () => {
-        for (let i = 0; i < 100; i++) {
-          const block = document.createElement('div');
-          block.className = 'block';
-          document.getElementById('spam').appendChild(block);
-        }
-        setTimeout(spammer, 50);
-      };
-      spammer();
-    }
+  setInterval(() => {
+    msgBox.innerText = messages[i++ % messages.length];
+    screen.classList.toggle('flash');
+  }, 2500);
 
-    function exitPrank() {
-      alert("You have exited the prank.");
-      location.reload();
+  // Glitch canvas animation
+  const canvas = document.getElementById("glitch");
+  const ctx = canvas.getContext("2d");
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+
+  function glitchEffect() {
+    for (let i = 0; i < 50; i++) {
+      ctx.fillStyle = `rgba(${Math.random()*255}, 0, 0, 0.2)`;
+      ctx.fillRect(Math.random()*canvas.width, Math.random()*canvas.height, Math.random()*300, 3);
     }
-  </script>
+  }
+  setInterval(glitchEffect, 100);
+
+  // Random screen shake
+  setInterval(() => {
+    screen.classList.toggle('shake');
+  }, 2000);
+
+  // Random alert
+  setInterval(() => {
+    alert("FATAL ERROR: The process cannot be stopped.");
+  }, 20000);
+
+  // Mouse movement chaos
+  document.addEventListener('mousemove', () => {
+    window.scrollTo(Math.random() * 1000, Math.random() * 1000);
+  });
+
+  // Scream after 10 sec
+  setTimeout(() => {
+    const scream = document.getElementById('scream');
+    scream.volume = 1;
+    scream.play().catch(() => {});
+  }, 10000);
+
+  // Whisper starts after 15 sec
+  setTimeout(() => {
+    const whisper = document.getElementById('whisper');
+    whisper.volume = 0.3;
+    whisper.play().catch(() => {});
+  }, 15000);
+
+  // Flash creepy image every 25 sec
+  const imageFlash = document.getElementById('imageFlash');
+  setInterval(() => {
+    imageFlash.style.opacity = '1';
+    setTimeout(() => {
+      imageFlash.style.opacity = '0';
+    }, 500);
+  }, 25000);
+</script>
+
 </body>
-</html>y
+</html>
